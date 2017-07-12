@@ -22,11 +22,11 @@ namespace GPDXD
 			flagButton = IsButton(keyType);
 			if (flagButton)
 			{
-				buttonName = GetButtonName(keyType);
+				buttonName = GetAxisName(keyType);
 			}
 			else
 			{
-				this.flagInvertAxis = IsInvertAxis(keyType);
+				flagInvertAxis = IsInvertAxis(keyType);
 			}
 			axisName = GetAxisName(keyType);
 		}
@@ -92,18 +92,18 @@ namespace GPDXD
 
 		}
 
-		private const string BUTTON_A = "joystick button 0";
-		private const string BUTTON_B = "joystick button 1";
-		private const string BUTTON_X = "joystick button 2";
-		private const string BUTTON_Y = "joystick button 3";
-		private const string BUTTON_L1 = "joystick button 4";
-		private const string BUTTON_R1 = "joystick button 5";
-		private const string BUTTON_L2 = "joystick button 6";
-		private const string BUTTON_R2 = "joystick button 7";
-		private const string BUTTON_L3 = "joystick button 8";
-		private const string BUTTON_R3 = "joystick button 9";
-		private const string BUTTON_START = "joystick button 10";
-		private const string BUTTON_SELECT = "joystick button 11";
+		//private const string BUTTON_A = "joystick button 0";
+		//private const string BUTTON_B = "joystick button 1";
+		//private const string BUTTON_X = "joystick button 2";
+		//private const string BUTTON_Y = "joystick button 3";
+		//private const string BUTTON_L1 = "joystick button 4";
+		//private const string BUTTON_R1 = "joystick button 5";
+		//private const string BUTTON_L2 = "joystick button 6";
+		//private const string BUTTON_R2 = "joystick button 7";
+		//private const string BUTTON_L3 = "joystick button 8";
+		//private const string BUTTON_R3 = "joystick button 9";
+		//private const string BUTTON_START = "joystick button 10";
+		//private const string BUTTON_SELECT = "joystick button 11";
 
 		private static bool IsButton(KeyType keyType)
 		{
@@ -115,51 +115,51 @@ namespace GPDXD
 			return (keyType == KeyType.DPadY || keyType == KeyType.LeftJoyY || keyType == KeyType.RightJoyY);
 		}
 
-		private static string GetButtonName(KeyType keyType)
-		{
-			switch (keyType)
-			{
+		//private static string GetButtonName(KeyType keyType)
+		//{
+		//	switch (keyType)
+		//	{
 
-				case KeyType.A:
-					return BUTTON_A;
+		//		case KeyType.A:
+		//			return BUTTON_A;
 
-				case KeyType.B:
-					return BUTTON_B;
+		//		case KeyType.B:
+		//			return BUTTON_B;
 
-				case KeyType.X:
-					return BUTTON_X;
+		//		case KeyType.X:
+		//			return BUTTON_X;
 
-				case KeyType.Y:
-					return BUTTON_Y;
+		//		case KeyType.Y:
+		//			return BUTTON_Y;
 
-				case KeyType.L1:
-					return BUTTON_L1;
+		//		case KeyType.L1:
+		//			return BUTTON_L1;
 
-				case KeyType.R1:
-					return BUTTON_R1;
+		//		case KeyType.R1:
+		//			return BUTTON_R1;
 
-				case KeyType.L2:
-					return BUTTON_L2;
+		//		case KeyType.L2:
+		//			return BUTTON_L2;
 
-				case KeyType.R2:
-					return BUTTON_R2;
+		//		case KeyType.R2:
+		//			return BUTTON_R2;
 
-				case KeyType.L3:
-					return BUTTON_L3;
+		//		case KeyType.L3:
+		//			return BUTTON_L3;
 
-				case KeyType.R3:
-					return BUTTON_R3;
+		//		case KeyType.R3:
+		//			return BUTTON_R3;
 
-				case KeyType.Start:
-					return BUTTON_START;
+		//		case KeyType.Start:
+		//			return BUTTON_START;
 
-				case KeyType.Select:
-					return BUTTON_SELECT;
+		//		case KeyType.Select:
+		//			return BUTTON_SELECT;
 
-				default:
-					return "";
-			}
-		}
+		//		default:
+		//			return "";
+		//	}
+		//}
 
 		private static string GetAxisName(KeyType keyType)
 		{

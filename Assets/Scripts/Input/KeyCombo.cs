@@ -1,13 +1,116 @@
 ﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace GPDXD
 {
-	public class KeyCombo
+	public class KeyManager
 	{
+		private List<KeyHistory> keyHistories;
 
+		public KeyManager()
+		{
+			keyHistories = new List<KeyHistory>();
+		}
+
+		public KeyHistoryId AddKeyHistory(KeyHistory keyHistory)
+		{
+			int count = keyHistories.Count;
+			keyHistories.Add(keyHistory);
+			return new KeyHistoryId(count);
+		}
+
+		internal KeyHistory GetKeyHistory(KeyHistoryId keyHistoryId)
+		{
+			int id = keyHistoryId.GetId();
+
+			if (id < keyHistories.Count)
+			{
+				return keyHistories[id];
+			}
+			else
+			{
+				return null;
+			}
+		}
 	}
 
-	internal class ButtonHistory : KeyHistory
+	public class KeyHistoryId
+	{
+		private int id;
+
+		internal KeyHistoryId(int newId)
+		{
+			id = newId;
+		}
+
+		internal int GetId()
+		{
+			return id;
+		}
+	}
+
+	public class KeyCombo
+	{
+		private KeyManager keyManager;
+		private List<KeyHistory> keyCombos;
+
+		private int keyHistoryCurrent;
+		private bool comboReady;
+		private bool comboDone;
+
+		public KeyCombo(KeyManager newKeyManager)
+		{
+			keyManager = newKeyManager;
+			keyCombos = new List<KeyHistory>();
+			comboReady = false;
+			comboDone = true;
+		}
+
+		public void RegisterKeyHistory(KeyHistoryId keyHistoryId)
+		{
+			keyCombos.Add(keyManager.GetKeyHistory(keyHistoryId));
+		}
+
+		public void Update()
+		{
+			comboReady = false;
+
+			foreach (KeyHistory keyHistory in keyCombos)
+			{
+				keyHistory.Update();
+			}
+
+			if (comboDone)
+			{
+				KeyHistory keyHistory = keyCombos[keyHistoryCurrent];
+
+				if (keyHistory.IsActive())
+				{
+					keyHistoryCurrent++;
+					if (keyHistoryCurrent == keyCombos.Count)
+					{
+						keyHistoryCurrent = 0;
+						comboReady = true;
+						comboDone = false;
+					}
+				}
+			}
+
+		}
+
+		public bool IsComboTriggered()
+		{
+			return comboReady;
+		}
+
+		public void SetComboDone()
+		{ 
+			comboDone = true;
+		}
+	}
+
+	public class ButtonHistory : KeyHistory
 	{
 		private ButtonEventType buttonEventType;
 
@@ -44,12 +147,12 @@ namespace GPDXD
 		}
 	}
 
-	internal class AxisHistory : KeyHistory
+	public class AxisHistory : KeyHistory
 	{
 		private float axisThresholdMin;
 		private float axisThresholdMax;
 
-		internal AxisHistory(KeyStroke keyStroke, float offsetTime, float newAxisThresholdMin, float newAxisThresholdMax) : base(keyStroke, offsetTime)
+		public AxisHistory(KeyStroke keyStroke, float offsetTime, float newAxisThresholdMin, float newAxisThresholdMax) : base(keyStroke, offsetTime)
 		{
 			axisThresholdMin = newAxisThresholdMin;
 			axisThresholdMax = newAxisThresholdMax;
@@ -66,14 +169,14 @@ namespace GPDXD
 		}
 	}
 
-	internal abstract class KeyHistory
+	public abstract class KeyHistory
 	{
 		private KeyStroke keyStroke;
 		private float lastPressTime;
 		private float offsetTime;
 		private float nextPressThreshold;
 
-		internal KeyHistory(KeyStroke newKeyStroke, float newOffsetTime)
+		public KeyHistory(KeyStroke newKeyStroke, float newOffsetTime)
 		{
 			keyStroke = newKeyStroke;
 			offsetTime = newOffsetTime;
@@ -81,7 +184,7 @@ namespace GPDXD
 
 		internal bool IsActive()
 		{
-			return nextPressThreshold > UnityEngine.Time.time;
+			return nextPressThreshold >= Time.time;
 		}
 
 		internal abstract void Update();
@@ -93,16 +196,15 @@ namespace GPDXD
 
 		protected void Press()
 		{
-			lastPressTime = UnityEngine.Time.time;
+			lastPressTime = Time.time;
 			nextPressThreshold = lastPressTime + offsetTime;
 		}
 	}
 
-	internal enum ButtonEventType
+	public enum ButtonEventType
 	{
 		ButtonDown,
 		ButtonUp,
 		ButtonHeld,
 	}
-
 }

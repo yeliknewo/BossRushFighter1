@@ -75,7 +75,7 @@ namespace Character
 
 		protected override KappaBuilder AddMoves()
 		{
-			// TODO
+			GetObj().GetComponent<Kappa>().AddKeyCombo();
 
 			return this;
 		}
