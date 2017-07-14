@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace GPDXD
+namespace Inputs.GPDXD
 {
 	public class KeyManager
 	{
@@ -180,6 +180,7 @@ namespace GPDXD
 		{
 			keyStroke = newKeyStroke;
 			offsetTime = newOffsetTime;
+			nextPressThreshold = Time.time - 1;
 		}
 
 		internal bool IsActive()

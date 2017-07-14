@@ -1,50 +1,47 @@
-﻿using GPDXD;
-using UnityEngine;
+﻿using UnityEngine;
+using Moves;
+using Movements;
 
-namespace Character
+namespace Characters.Hero.Kappa
 {
-	public class Kappa : Hero
+	public class Kappa : Hero<KappaAction, Kappa>
 	{
-		private KeyCombo keyCombo;
-		private KeyCombo resetCombo;
-
-		public void AddKeyCombo()
+		private void MoveLeft(Move<KappaAction> move)
 		{
-			KeyManager manager = new KeyManager();
-			keyCombo = new KeyCombo(manager);
+			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-			KeyHistoryId id = manager.AddKeyHistory(new ButtonHistory(ButtonEventType.ButtonDown, new KeyStroke(KeyType.A), 1f));
-			keyCombo.RegisterKeyHistory(id);
+			//rb.AddForce(Vector2.left * 100, ForceMode2D.Force);
 
-			id = manager.AddKeyHistory(new ButtonHistory(ButtonEventType.ButtonDown, new KeyStroke(KeyType.B), 0f));
-			keyCombo.RegisterKeyHistory(id);
+			Movement<KappaAction, Kappa> movement = GetMovement();
 
-			resetCombo = new KeyCombo(manager);
+			movement.MoveLeft(this);
 
-			id = manager.AddKeyHistory(new ButtonHistory(ButtonEventType.ButtonDown, new KeyStroke(KeyType.L1), 0f));
-			resetCombo.RegisterKeyHistory(id);
-
-			//KeyHistoryId id = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 10f, 0.5f, 1f));
-			//keyCombo.RegisterKeyHistory(id);
-
-			//id = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.RightJoyX), 10f, -0.5f, -1f));
-			//keyCombo.RegisterKeyHistory(id);
+			move.ActionDone();
 		}
 
-		public void Update()
+		private void MoveRight(Move<KappaAction> move)
 		{
-			keyCombo.Update();
-			resetCombo.Update();
+			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-			if(resetCombo.IsComboTriggered())
-			{
-				keyCombo.SetComboDone();
-				resetCombo.SetComboDone();
-			}
+			//rb.AddForce(Vector2.right * 100, ForceMode2D.Force);
 
-			if (keyCombo.IsComboTriggered())
+			Movement<KappaAction, Kappa> movement = GetMovement();
+			movement.MoveRight(this);
+
+			move.ActionDone();
+		}
+
+		protected override void DoMove(Move<KappaAction> move)
+		{
+			switch (move.GetAction())
 			{
-				transform.Rotate(Vector3.forward * 180);
+				case KappaAction.Left:
+					MoveLeft(move);
+					break;
+
+				case KappaAction.Right:
+					MoveRight(move);
+					break;
 			}
 		}
 	}

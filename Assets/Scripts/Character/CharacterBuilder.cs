@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using Inputs.GPDXD;
+using UnityEngine;
 
-namespace Character
+namespace Characters
 {
 	public abstract class CharacterBuilder<T> where T : CharacterBuilder<T>
 	{
-		public GameObject Build()
+		public GameObject Build(KeyManager manager)
 		{
 			obj = new GameObject(GetName());
-			AddCore().AddRenderer().AddRigidbody().AddCollider().AddStats().AddMoves();
+			AddCore().AddRenderer().AddRigidbody().AddCollider().AddStats().AddMoves(manager);
 			return obj;
 		}
 
@@ -25,6 +26,6 @@ namespace Character
 		protected abstract T AddRigidbody();
 		protected abstract T AddCollider();
 		protected abstract T AddStats();
-		protected abstract T AddMoves();
+		protected abstract T AddMoves(KeyManager manager);
 	}
 }

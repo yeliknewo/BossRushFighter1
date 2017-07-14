@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Character
+namespace Characters.Hero
 {
-	public abstract class Hero : Character
+	public abstract class Hero<A, C> : Character<A, C> where C : Character<A, C>
 	{
 
 	}

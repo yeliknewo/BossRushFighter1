@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GPDXD
+namespace Inputs.GPDXD
 {
 	public class KeyStroke
 	{

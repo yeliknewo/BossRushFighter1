@@ -1,4 +1,4 @@
-﻿namespace Character
+﻿namespace Stats
 {
 	public enum StatType
 	{

@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using Stats;
 
-namespace Character
+namespace Characters.Boss
 {
-	public abstract class BossBuilder<T, C> : CharacterBuilder<T> where T : BossBuilder<T, C>
-		where C : Boss
+	public abstract class BossBuilder<T, C, A> : CharacterBuilder<T> where T : BossBuilder<T, C, A>
+		where C : Boss<A, C>
 	{
 
 		protected override T AddStats()
 		{
-			Boss boss = GetObj().GetComponent<C>();
-			boss.Init();
+			Boss<A, C> boss = GetObj().GetComponent<C>();
+
+			boss.InitStats();
+
 			boss.SetBaseStat(StatType.Health, new Stat(GetHealthCurrentStarting(), GetHealthMaxStarting()));
 
 			return (T)this;

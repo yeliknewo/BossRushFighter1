@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Inputs.GPDXD;
+using Moves;
 using UnityEngine;
+using Other;
+using Movements;
 
-namespace Character
+namespace Characters.Hero.Kappa
 {
-	public class KappaBuilder : HeroBuilder<KappaBuilder, Kappa>
+	public class KappaBuilder : HeroBuilder<KappaBuilder, Kappa, KappaAction>
 	{
 		private static KappaBuilder builder;
 
@@ -23,6 +26,8 @@ namespace Character
 		private const string NAME = "Kappa";
 
 		private const string ASSET_PATH_SPRITE = "Sprites\\TestArt1";
+
+		private const float AXIS_X_DEADZONE = 0.1f;
 
 		protected override float GetHealthCurrentStarting()
 		{
@@ -61,7 +66,8 @@ namespace Character
 
 		protected override KappaBuilder AddRigidbody()
 		{
-			GetObj().AddComponent<Rigidbody2D>();
+			Rigidbody2D rb = GetObj().AddComponent<Rigidbody2D>();
+			rb.isKinematic = true;
 
 			return this;
 		}
@@ -73,9 +79,32 @@ namespace Character
 			return this;
 		}
 
-		protected override KappaBuilder AddMoves()
+		protected override KappaBuilder AddMoves(KeyManager manager)
 		{
-			GetObj().GetComponent<Kappa>().AddKeyCombo();
+			Kappa kappa = GetObj().GetComponent<Kappa>();
+
+			Movement<KappaAction, Kappa> movement = new Movement<KappaAction, Kappa>();
+
+			kappa.InitMoves(movement);
+
+			KeyHistoryId moveLeft = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 0f, -1f, -AXIS_X_DEADZONE));
+			KeyHistoryId moveRight = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 0f, AXIS_X_DEADZONE, 1f));
+
+			{
+				KeyCombo combo = new KeyCombo(manager);
+
+				combo.RegisterKeyHistory(moveLeft);
+
+				kappa.AddMove(new Move<KappaAction>(combo, KappaAction.Left, PriorityConstants.PRIORITY_MOVE_LEFT));
+			}
+
+			{
+				KeyCombo combo = new KeyCombo(manager);
+
+				combo.RegisterKeyHistory(moveRight);
+
+				kappa.AddMove(new Move<KappaAction>(combo, KappaAction.Right, PriorityConstants.PRIORITY_MOVE_RIGHT));
+			}
 
 			return this;
 		}

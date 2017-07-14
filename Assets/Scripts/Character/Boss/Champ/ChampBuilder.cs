@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Inputs.GPDXD;
 using UnityEngine;
+using Other;
 
-namespace Character
+namespace Characters.Boss.Champ
 {
-	public class ChampBuilder : BossBuilder<ChampBuilder, Champ>
+	public class ChampBuilder : BossBuilder<ChampBuilder, Champ, ChampAction>
 	{
 		private static ChampBuilder builder;
 
@@ -61,7 +62,8 @@ namespace Character
 
 		protected override ChampBuilder AddRigidbody()
 		{
-			GetObj().AddComponent<Rigidbody2D>();
+			Rigidbody2D rb = GetObj().AddComponent<Rigidbody2D>();
+			rb.isKinematic = true;
 
 			return this;
 		}
@@ -73,9 +75,8 @@ namespace Character
 			return this;
 		}
 
-		protected override ChampBuilder AddMoves()
+		protected override ChampBuilder AddMoves(KeyManager manager)
 		{
-			// TODO
 
 			return this;
 		}

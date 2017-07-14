@@ -1,15 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using Stats;
 
-namespace Character
+namespace Characters.Hero
 {
-	public abstract class HeroBuilder<T, C> : CharacterBuilder<T> where T : HeroBuilder<T, C>
-		where C : Hero
+	public abstract class HeroBuilder<T, C, A> : CharacterBuilder<T> where T : HeroBuilder<T, C, A>
+		where C : Hero<A, C>
 	{
 		protected override T AddStats()
 		{
-			Hero hero = GetObj().GetComponent<C>();
-			hero.Init();
+			Hero<A, C> hero = GetObj().GetComponent<C>();
+
+			hero.InitStats();
+
 			hero.SetBaseStat(StatType.Health, new Stat(GetHealthCurrentStarting(), GetHealthMaxStarting()));
 
 			return (T)this;
