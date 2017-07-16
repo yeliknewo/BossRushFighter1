@@ -7,15 +7,15 @@ namespace Scenes.Test1
 {
 	public class Spawner : MonoBehaviour
 	{
-		public void Start()
+		public void Awake()
 		{
 			KeyManager manager = new KeyManager();
 
 			GameObject kappaObj = KappaBuilder.Get().Build(manager);
 			kappaObj.transform.position = Vector3.left;
 
-			GameObject champObj = ChampBuilder.Get().Build(manager);
-			champObj.transform.position = Vector3.right;
+			//GameObject champObj = ChampBuilder.Get().Build(manager);
+			//champObj.transform.position = Vector3.right;
 		}
 	}
 }

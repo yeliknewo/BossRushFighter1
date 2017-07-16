@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Moves;
+﻿using Moves;
 using Movements;
 
 namespace Characters.Hero.Kappa
@@ -8,25 +7,27 @@ namespace Characters.Hero.Kappa
 	{
 		private void MoveLeft(Move<KappaAction> move)
 		{
-			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
-
-			//rb.AddForce(Vector2.left * 100, ForceMode2D.Force);
-
 			Movement<KappaAction, Kappa> movement = GetMovement();
 
-			movement.MoveLeft(this);
+			movement.MoveLeft(this, GetPhysics());
 
 			move.ActionDone();
 		}
 
 		private void MoveRight(Move<KappaAction> move)
 		{
-			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
-
-			//rb.AddForce(Vector2.right * 100, ForceMode2D.Force);
-
 			Movement<KappaAction, Kappa> movement = GetMovement();
-			movement.MoveRight(this);
+
+			movement.MoveRight(this, GetPhysics());
+
+			move.ActionDone();
+		}
+
+		private void StandStill(Move<KappaAction> move)
+		{
+			Movement<KappaAction, Kappa> movement = GetMovement();
+
+			movement.StandStill(this, GetPhysics());
 
 			move.ActionDone();
 		}
@@ -35,6 +36,10 @@ namespace Characters.Hero.Kappa
 		{
 			switch (move.GetAction())
 			{
+				case KappaAction.Stand:
+					StandStill(move);
+					break;
+
 				case KappaAction.Left:
 					MoveLeft(move);
 					break;

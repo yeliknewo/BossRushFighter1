@@ -3,6 +3,7 @@ using UnityEngine;
 using Moves;
 using Movements;
 using Stats;
+using Physics;
 
 namespace Characters
 {
@@ -11,6 +12,11 @@ namespace Characters
 		private Dictionary<StatType, Stat> stats;
 		private List<Move<A>> moves;
 		private Movement<A, C> movement;
+
+		protected PhysicsObject GetPhysics()
+		{
+			return GetComponent<PhysicsObject>();
+		}
 
 		protected Movement<A, C> GetMovement()
 		{
@@ -26,6 +32,8 @@ namespace Characters
 		{
 			moves = new List<Move<A>>();
 			movement = newMovement;
+			PhysicsObject physics = gameObject.AddComponent<PhysicsObject>();
+			physics.SetGravity(Vector3.down);
 		}
 
 		internal void AddMove(Move<A> move)

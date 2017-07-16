@@ -68,13 +68,14 @@ namespace Characters.Hero.Kappa
 		{
 			Rigidbody2D rb = GetObj().AddComponent<Rigidbody2D>();
 			rb.isKinematic = true;
+			rb.useFullKinematicContacts = true;
 
 			return this;
 		}
 
 		protected override KappaBuilder AddCollider()
 		{
-			GetObj().AddComponent<BoxCollider2D>();
+			PolygonCollider2D collider = GetObj().AddComponent<PolygonCollider2D>();
 
 			return this;
 		}
@@ -89,6 +90,7 @@ namespace Characters.Hero.Kappa
 
 			KeyHistoryId moveLeft = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 0f, -1f, -AXIS_X_DEADZONE));
 			KeyHistoryId moveRight = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 0f, AXIS_X_DEADZONE, 1f));
+			KeyHistoryId standStill = manager.AddKeyHistory(new AxisHistory(new KeyStroke(KeyType.LeftJoyX), 0f, -AXIS_X_DEADZONE, AXIS_X_DEADZONE));
 
 			{
 				KeyCombo combo = new KeyCombo(manager);
@@ -104,6 +106,14 @@ namespace Characters.Hero.Kappa
 				combo.RegisterKeyHistory(moveRight);
 
 				kappa.AddMove(new Move<KappaAction>(combo, KappaAction.Right, PriorityConstants.PRIORITY_MOVE_RIGHT));
+			}
+
+			{
+				KeyCombo combo = new KeyCombo(manager);
+
+				combo.RegisterKeyHistory(standStill);
+
+				kappa.AddMove(new Move<KappaAction>(combo, KappaAction.Stand, PriorityConstants.PRIORITY_STAND_STILL));
 			}
 
 			return this;
